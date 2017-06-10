@@ -382,12 +382,14 @@ static const struct sys_reg_desc *find_reg(const struct sys_reg_params *params,
 int kvm_handle_cp14_load_store(struct kvm_vcpu *vcpu, struct kvm_run *run)
 {
 	kvm_inject_undefined(vcpu);
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
 int kvm_handle_cp14_access(struct kvm_vcpu *vcpu, struct kvm_run *run)
 {
 	kvm_inject_undefined(vcpu);
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
@@ -467,6 +469,7 @@ int kvm_handle_cp15_64(struct kvm_vcpu *vcpu, struct kvm_run *run)
 		*vcpu_reg(vcpu, Rt2) = val;
 	}
 
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
@@ -489,6 +492,7 @@ int kvm_handle_cp15_32(struct kvm_vcpu *vcpu, struct kvm_run *run)
 	params.Op2 = (hsr >> 17) & 0x7;
 
 	emulate_cp15(vcpu, &params);
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
@@ -557,6 +561,7 @@ int kvm_handle_sys_reg(struct kvm_vcpu *vcpu, struct kvm_run *run)
 	params.Rt = (esr >> 5) & 0x1f;
 	params.is_write = !(esr & 1);
 
+    vcpu->cpu_trap_count++;
 	return emulate_sys_reg(vcpu, &params);
 }
 

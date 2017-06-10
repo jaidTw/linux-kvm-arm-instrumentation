@@ -34,12 +34,14 @@ static int handle_hvc(struct kvm_vcpu *vcpu, struct kvm_run *run)
 		return 1;
 
 	kvm_inject_undefined(vcpu);
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
 static int handle_smc(struct kvm_vcpu *vcpu, struct kvm_run *run)
 {
 	kvm_inject_undefined(vcpu);
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
@@ -62,10 +64,12 @@ static int kvm_handle_wfx(struct kvm_vcpu *vcpu, struct kvm_run *run)
 	else
 		kvm_vcpu_block(vcpu);
 
+    vcpu->cpu_trap_count++;
 	return 1;
 }
 
 static exit_handle_fn arm_exit_handlers[] = {
+/* following are all CPU traps */
 	[ESR_EL2_EC_WFI]	= kvm_handle_wfx,
 	[ESR_EL2_EC_CP15_32]	= kvm_handle_cp15_32,
 	[ESR_EL2_EC_CP15_64]	= kvm_handle_cp15_64,
@@ -77,6 +81,7 @@ static exit_handle_fn arm_exit_handlers[] = {
 	[ESR_EL2_EC_HVC64]	= handle_hvc,
 	[ESR_EL2_EC_SMC64]	= handle_smc,
 	[ESR_EL2_EC_SYS64]	= kvm_handle_sys_reg,
+/* following might be Mem or IO traps */
 	[ESR_EL2_EC_IABT]	= kvm_handle_guest_abort,
 	[ESR_EL2_EC_DABT]	= kvm_handle_guest_abort,
 };
