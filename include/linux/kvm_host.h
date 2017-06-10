@@ -267,6 +267,13 @@ struct kvm_vcpu {
 		bool dy_eligible;
 	} spin_loop;
 #endif
+
+#ifdef CONFIG_VM_HW2
+    unsigned long cpu_trap_count;
+    unsigned long mem_trap_count;
+    unsigned long io_trap_count;
+#endif
+
 	bool preempted;
 	struct kvm_vcpu_arch arch;
 };

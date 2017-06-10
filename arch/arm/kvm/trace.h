@@ -223,6 +223,29 @@ TRACE_EVENT(kvm_hvc,
 		  __entry->vcpu_pc, __entry->r0, __entry->imm)
 );
 
+#ifdef CONFIG_VM_HW2
+TRACE_EVENT(kvm_vm_hw2, 
+    TP_PROTO(unsigned long cpu_trap_count, unsigned long mem_trap_count, 
+                                                unsigned long io_trap_count),
+    TP_ARGS(cpu_trap_count, mem_trap_count, io_trap_count),
+
+    TP_STRUCT__entry(
+        __field(    unsigned long, cpu_trap_count)
+        __field(    unsigned long, mem_trap_count)
+        __field(    unsigned long, io_trap_count )
+    ),
+
+    TP_fast_assign(
+        __entry->cpu_trap_count = cpu_trap_count;
+        __entry->mem_trap_count = mem_trap_count;
+        __entry->io_trap_count  = io_trap_count;
+    ),
+
+    TP_printk("CPU trap %llu, MEM trap %llu, IO trap %llu",
+            __entry->cpu_trap_count, __entry->mem_trap_count, __entry->io_trap_count)
+);
+#endif
+
 #endif /* _TRACE_KVM_H */
 
 #undef TRACE_INCLUDE_PATH

@@ -30,3 +30,6 @@ config HAVE_KVM_CPU_RELAX_INTERCEPT
 
 config KVM_VFIO
        bool
+
+config VM_HW2
+        bool "For VM course HW2"
