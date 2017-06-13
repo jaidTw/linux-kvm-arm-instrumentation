@@ -773,8 +773,8 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu, struct kvm_run *run)
 
 	gfn = fault_ipa >> PAGE_SHIFT;
 	if (!kvm_is_visible_gfn(vcpu->kvm, gfn)) {
-        vcpu->io_trap_count++;
-        /* IO memory error */
+		vcpu->io_trap_count++;
+		/* IO memory error */
 		if (is_iabt) {
 			/* Prefetch Abort on I/O address */
 			kvm_inject_pabt(vcpu, kvm_vcpu_get_hfar(vcpu));
@@ -799,8 +799,8 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu, struct kvm_run *run)
 		ret = io_mem_abort(vcpu, run, fault_ipa);
 		goto out_unlock;
 	}
-    /* Main memory error */
-    vcpu->mem_trap_count++;
+        /* Main memory error */
+        vcpu->mem_trap_count++;
 	memslot = gfn_to_memslot(vcpu->kvm, gfn);
 
 	ret = user_mem_abort(vcpu, fault_ipa, memslot, fault_status);

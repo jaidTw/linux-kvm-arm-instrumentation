@@ -34,14 +34,14 @@ static int handle_hvc(struct kvm_vcpu *vcpu, struct kvm_run *run)
 		return 1;
 
 	kvm_inject_undefined(vcpu);
-    vcpu->cpu_trap_count++;
+	vcpu->cpu_trap_count++;
 	return 1;
 }
 
 static int handle_smc(struct kvm_vcpu *vcpu, struct kvm_run *run)
 {
 	kvm_inject_undefined(vcpu);
-    vcpu->cpu_trap_count++;
+	vcpu->cpu_trap_count++;
 	return 1;
 }
 
